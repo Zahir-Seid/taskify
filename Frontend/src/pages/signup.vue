@@ -55,7 +55,7 @@
                             Signup
                         </button>
                         <div class="text-center text-gray-600">
-                            Don&#x27;t have an account? <a href="#" class="text-gray-800 hover:underline">signin</a>
+                            Don&#x27;t have an account? <a href="/login" class="text-gray-800 hover:underline">signin</a>
                         </div>
                         <div v-if="error" class="text-red-500 text-sm">{{ error }}</div>
                     </form>

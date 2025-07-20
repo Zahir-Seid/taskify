@@ -44,7 +44,7 @@
                             <div class="text-center mt-4">
                                 <p class="text-gray-600">
                                     Don&#x27;t have an account?
-                                    <a href="#" class="text-black font-medium hover:underline">Sign Up</a>
+                                    <a href="/register" class="text-black font-medium hover:underline">Sign Up</a>
                                 </p>
                             </div>
                         </form>
