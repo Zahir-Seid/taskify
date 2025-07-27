@@ -2,9 +2,11 @@
 FROM node:20-alpine AS builder
 WORKDIR /app
 
+# Install dependencies
 COPY package*.json ./
 RUN npm install
 
+# Copy source and generate Prisma client
 COPY . .
 RUN npx prisma generate
 RUN npm run build
@@ -13,6 +15,7 @@ RUN npm run build
 FROM node:20-alpine
 WORKDIR /app
 
+# Copy built files and dependencies
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
@@ -21,6 +24,5 @@ COPY --from=builder /app/prisma ./prisma
 ENV NODE_ENV=production
 EXPOSE 3000
 
-CMD ["node", "dist/main.js"]
-
-
+# Ensure Prisma migrations run before app starts
+CMD ["sh", "-c", "npx prisma migrate deploy && node dist/main.js"]
