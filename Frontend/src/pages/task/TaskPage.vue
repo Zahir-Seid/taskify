@@ -20,6 +20,7 @@ const userName = ref('')
 const page = ref(1)
 const limit = ref(6)
 const total = ref(0)
+const backend = import.meta.env.VITE_BACKEND_URL
 
 function getAuthHeader() {
   const token = localStorage.getItem('token')
@@ -30,7 +31,7 @@ async function fetchTasks() {
   loading.value = true
   error.value = ''
   try {
-    const res = await axios.get('http://localhost:3000/tasks', {
+    const res = await axios.get(`${backend}/tasks`, {
       headers: getAuthHeader(),
       params: {
         search: searchQuery.value || undefined,
@@ -83,7 +84,7 @@ onMounted(() => {
 
 async function fetchProfile() {
   try {
-    const res = await axios.get('http://localhost:3000/profile', { headers: getAuthHeader() })
+    const res = await axios.get(`${backend}/profile`, { headers: getAuthHeader() })
     userName.value = res.data.name
   } catch (err) {
     if (err.response && err.response.status === 401) {
@@ -102,7 +103,7 @@ const currentTasks = computed(() => activeTab.value === 'pending' ? pendingTasks
 async function handleCreateTask(name) {
   if (name.trim()) {
     try {
-      await axios.post('http://localhost:3000/tasks', { name }, { headers: getAuthHeader() })
+      await axios.post(`${backend}/tasks`, { name }, { headers: getAuthHeader() })
       showCreateModal.value = false
       fetchTasks()
     } catch (err) {
@@ -119,7 +120,7 @@ async function handleCreateTask(name) {
 async function handleDeleteTask() {
   if (taskToDelete.value) {
     try {
-      await axios.delete(`http://localhost:3000/tasks/${taskToDelete.value}`, { headers: getAuthHeader() })
+      await axios.delete(`${backend}/tasks/${taskToDelete.value}`, { headers: getAuthHeader() })
       showDeleteModal.value = false
       taskToDelete.value = null
       fetchTasks()
@@ -136,7 +137,7 @@ async function handleDeleteTask() {
 
 async function handleStatusChange(taskId, newStatus) {
   try {
-    await axios.patch(`http://localhost:3000/tasks/${taskId}`, { status: newStatus }, { headers: getAuthHeader() })
+    await axios.patch(`${backend}/tasks/${taskId}`, { status: newStatus }, { headers: getAuthHeader() })
     fetchTasks()
   } catch (err) {
     if (err.response && err.response.status === 401) {

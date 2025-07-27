@@ -1,3 +1,31 @@
+<script setup>
+import { ref } from 'vue'
+import axios from 'axios'
+import { useRouter } from 'vue-router'
+
+const name = ref('')
+const email = ref('')
+const password = ref('')
+const error = ref('')
+const router = useRouter()
+const backend = import.meta.env.VITE_BACKEND_URL
+async function handleRegister(e) {
+  e.preventDefault()
+  error.value = ''
+  try {
+    const res = await axios.post(`${backend}/auth/register`, {
+      name: name.value,
+      email: email.value,
+      password: password.value
+    })
+    localStorage.setItem('token', res.data.access_token)
+    router.push('/')
+  } catch (err) {
+    error.value = 'Registration failed.'
+  }
+}
+</script>
+
 <template
     ><div id="webcrumbs">
         <div class="min-h-screen bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center p-4">
@@ -65,30 +93,4 @@
     </div></template
 >
 
-<script setup>
-import { ref } from 'vue'
-import axios from 'axios'
-import { useRouter } from 'vue-router'
 
-const name = ref('')
-const email = ref('')
-const password = ref('')
-const error = ref('')
-const router = useRouter()
-
-async function handleRegister(e) {
-  e.preventDefault()
-  error.value = ''
-  try {
-    const res = await axios.post('http://localhost:3000/auth/register', {
-      name: name.value,
-      email: email.value,
-      password: password.value
-    })
-    localStorage.setItem('token', res.data.access_token)
-    router.push('/')
-  } catch (err) {
-    error.value = 'Registration failed.'
-  }
-}
-</script>

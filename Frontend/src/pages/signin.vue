@@ -1,3 +1,30 @@
+<script setup>
+import { ref } from 'vue'
+import axios from 'axios'
+import { useRouter } from 'vue-router'
+
+const email = ref('')
+const password = ref('')
+const error = ref('')
+const router = useRouter()
+const backend = import.meta.env.VITE_BACKEND_URL
+
+async function handleLogin(e) {
+  e.preventDefault()
+  error.value = ''
+  try {
+    const res = await axios.post(`${backend}/auth/login`, {
+      email: email.value,
+      password: password.value
+    })
+    localStorage.setItem('token', res.data.access_token)
+    router.push('/')
+  } catch (err) {
+    error.value = 'Invalid email or password.'
+  }
+}
+</script>
+
 <template
     ><div id="webcrumbs">
         <div class="min-h-screen flex items-center justify-center bg-gradient-to-tr from-blue-100 to-blue-200">
@@ -55,28 +82,4 @@
     </div></template
 >
 
-<script setup>
-import { ref } from 'vue'
-import axios from 'axios'
-import { useRouter } from 'vue-router'
 
-const email = ref('')
-const password = ref('')
-const error = ref('')
-const router = useRouter()
-
-async function handleLogin(e) {
-  e.preventDefault()
-  error.value = ''
-  try {
-    const res = await axios.post('http://localhost:3000/auth/login', {
-      email: email.value,
-      password: password.value
-    })
-    localStorage.setItem('token', res.data.access_token)
-    router.push('/')
-  } catch (err) {
-    error.value = 'Invalid email or password.'
-  }
-}
-</script>
