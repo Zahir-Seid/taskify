@@ -20,7 +20,7 @@ const userName = ref('')
 const page = ref(1)
 const limit = ref(6)
 const total = ref(0)
-const backend = import.meta.env.VITE_BACKEND_URL
+const backend = "https://taskify-p69x.onrender.com"
 
 function getAuthHeader() {
   const token = localStorage.getItem('token')

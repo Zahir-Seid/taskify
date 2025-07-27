@@ -8,7 +8,8 @@ const email = ref('')
 const password = ref('')
 const error = ref('')
 const router = useRouter()
-const backend = import.meta.env.VITE_BACKEND_URL
+const backend = "https://taskify-p69x.onrender.com"
+
 async function handleRegister(e) {
   e.preventDefault()
   error.value = ''
